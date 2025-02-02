@@ -1,3 +1,11 @@
+'''
+Author: Xiaofeng Yang yangxf@yxf993.onmicrosoft.com
+Date: 2025-01-20 15:05:50
+LastEditors: Xiaofeng Yang yangxf@yxf993.onmicrosoft.com
+LastEditTime: 2025-01-20 20:53:41
+FilePath: \aicb-master\workload_generator\mocked_model\AiobMegatron.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 """
 Copyright (c) 2021, Alibaba Group;
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -881,7 +889,7 @@ class Grad_param:
     def __init__(self, args=None):
         tp = args.tensor_model_parallel_size
         param = args.model_param
-        self.dp = args.dp_num
+        self.dp = args.data_parallel_size
 
         device = torch.cuda.current_device()
         dtype = torch.float32

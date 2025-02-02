@@ -2,9 +2,10 @@
 
 
 frame=Megatron
-world_size=32
-tensor_model_parallel_size=8
-pipeline_model_parallel=1
+world_size=2
+tensor_model_parallel_size=1
+pipeline_model_parallel_size=1
+context_parallel_size=2
 global_batch=1024
 micro_batch=1
 num_layers=40
@@ -18,7 +19,7 @@ swiglu=
 sp_enable=
 ffn_hidden_size=
 comp_filepath=
-model_size=13
+model_size=7
 max_position_embeddings=4096
 vocab_size=50257
 num_experts=1
@@ -31,7 +32,7 @@ usage() {
       --frame              communication framework, defaults to $frame
       --world_size              world size, defaults to $world_size
       --tensor_model_parallel_size                  tensor parallelism size, defaults to $tensor_model_parallel_size
-      --pipeline_model_parallel                  pipeline parallelism size, defaults to $pipeline_model_parallel
+      --pipeline_model_parallel_size                  pipeline parallelism size, defaults to $pipeline_model_parallel_size
       --global_batch            global batch size, defaults to $global_batch
       --micro_batch             micro batch size, defaults to $micro_batch
       --num_layers              number of layers, defaults to $num_layers
@@ -68,8 +69,10 @@ do
       world_size=$2; shift;;
     --tensor_model_parallel_size|--tp)
       tensor_model_parallel_size=$2; shift;;
-    --pipeline_model_parallel|--pp)
-      pipeline_model_parallel=$2; shift;;
+    --pipeline_model_parallel_size|--pp)
+      pipeline_model_parallel_size_size=$2; shift;;
+    --context_parallel_size|--cp)
+      context_parallel_size=$2; shift;;
     --global_batch)
       global_batch=$2; shift;;
     --micro_batch)
@@ -147,7 +150,7 @@ case $model_size in
     num_layers=36
     hidden_size=4096
     num_attention_heads=32
-    tensor_model_parallel_size=4
+    tensor_model_parallel_size=1
     ;;
   405)
     model_name=llama_405B
@@ -181,7 +184,8 @@ cmd="python -m workload_generator.AIOB_simAI_workload_generator \
   --frame=$frame \
   --world_size=$world_size \
   --tensor_model_parallel_size=$tensor_model_parallel_size \
-  --pipeline_model_parallel=$pipeline_model_parallel \
+  --pipeline_model_parallel_size=$pipeline_model_parallel_size \
+  --context-parallel-size=$context_parallel_size \
   --global_batch=$global_batch \
   --micro_batch=$micro_batch \
   --num_layers=$num_layers \
