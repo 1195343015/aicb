@@ -76,18 +76,18 @@ There are a lot of parameters that influence the communication and computation p
 For the sake of generality, we cover those typical settings using a smallest set of benchmarks rather than traversing all the combinations. To this end, we propose the benchmark suite as listed in the following table.
 **Users can directly run all the selected workloads selected in AICB, or run part of the workloads, or even generate their own workloads.**
 For more detailed information, please refer to [AICB_workload spec v1.1](workload/Workload_spec_v1.1.csv).
-| id  | Name          | Sequence_length | Framework | TP  | DP                    | PP  | SP     | Expert parallel number | Expert num | Zero_level |
-|:---:|:-------------:|:---------------:|:---------:|:---:|:---------------------:|:---:|:------:|:----------------------:|:----------:|:----------:|
-|  1  | LLaMA_7B      |      2048       | Megatron  |  1  |  world_size/(PP*TP)   |  1  |   -    |           -            |     -      |     -      |
-|  2  | GPT_13B       |      2048       | Megatron  |  2  |  world_size/(PP*TP)   |  1  | enable |           -            |     -      |     -      |
-|  3  | GPT_22B       |      2048       | Megatron  |  4  |  world_size/(PP*TP)   |  1  |   -    |           -            |     -      |     -      |
-|  4  | LLaMA_65B     |      4096       | Megatron  |  8  |  world_size/(PP*TP)   |  2  | enable |           -            |     -      |     -      |
-|  5  | GPT_175B      |      2048       | Megatron  |  8  |  world_size/(PP*TP)   |  8  | enable |           -            |     -      |     -      |
-|  6  | GPT_175B      |      2048       | Megatron  |  8  |  world_size/(PP*TP)   |  8  | disable|           -            |     -      |     -      |
-|  7  | Llama3_405B   |      8192       | Megatron  |  8  |  world_size/(PP*TP)   |  16 | enable |           -            |     -      |     -      |
-|  8  | LLaMA_7B      |      4096       | Deepspeed |  1  |      world_size       |  1  |   -    |           -            |     -      |     2      |
-|  9  | LLaMA_65B     |      4096       | Deepspeed |  1  |      world_size       |  1  |   -    |           -            |     -      |     3      |
-| 10  | Mistral_8*7B  |      2048       | Megatron  |  2  |  world_size/(PP*TP)   |  1  | enable |           8            |     8      |     -      |
+|  id   |     Name     | Sequence_length | Framework |  TP   |         DP         |  PP   |   SP    | Expert parallel number | Expert num | Zero_level |
+| :---: | :----------: | :-------------: | :-------: | :---: | :----------------: | :---: | :-----: | :--------------------: | :--------: | :--------: |
+|   1   |   LLaMA_7B   |      2048       | Megatron  |   1   | world_size/(PP*TP) |   1   |    -    |           -            |     -      |     -      |
+|   2   |   GPT_13B    |      2048       | Megatron  |   2   | world_size/(PP*TP) |   1   | enable  |           -            |     -      |     -      |
+|   3   |   GPT_22B    |      2048       | Megatron  |   4   | world_size/(PP*TP) |   1   |    -    |           -            |     -      |     -      |
+|   4   |  LLaMA_65B   |      4096       | Megatron  |   8   | world_size/(PP*TP) |   2   | enable  |           -            |     -      |     -      |
+|   5   |   GPT_175B   |      2048       | Megatron  |   8   | world_size/(PP*TP) |   8   | enable  |           -            |     -      |     -      |
+|   6   |   GPT_175B   |      2048       | Megatron  |   8   | world_size/(PP*TP) |   8   | disable |           -            |     -      |     -      |
+|   7   | Llama3_405B  |      8192       | Megatron  |   8   | world_size/(PP*TP) |  16   | enable  |           -            |     -      |     -      |
+|   8   |   LLaMA_7B   |      4096       | Deepspeed |   1   |     world_size     |   1   |    -    |           -            |     -      |     2      |
+|   9   |  LLaMA_65B   |      4096       | Deepspeed |   1   |     world_size     |   1   |    -    |           -            |     -      |     3      |
+|  10   | Mistral_8*7B |      2048       | Megatron  |   2   | world_size/(PP*TP) |   1   | enable  |           8            |     8      |     -      |
 
 
 # Setup
@@ -179,7 +179,7 @@ For `DeepSeek`, one can use the [scripts/megatron_gpt.sh](./scripts/megatron_gpt
 sh scripts/megatron_gpt.sh \
   --frame DeepSeek \
   --tensor_model_parallel_size 4 \
-  --pipeline_model_parallel 1 \
+  --pipeline_model_parallel_size 1 \
   --moe_enable \
   --expert_model_parallel_size 1 \
   --global_batch 4 \
@@ -263,7 +263,7 @@ For the DeepSeek, you can also use [scripts/megatron_workload_with_aiob.sh](scri
 
 ```bash
 sh scripts/megatron_workload_with_aiob.sh \
--m deepseek16 --world_size 2048 --tensor_model_parallel_size 1 --pipeline_model_parallel 1 --sp --ep 16 \
+-m deepseek16 --world_size 2048 --tensor_model_parallel_size 1 --pipeline_model_parallel_size 1 --sp --ep 16 \
 --moe_router_topk 6 --moe_enable  \
 --frame DeepSeek --global_batch 4096 \
 --micro_batch 1 --seq_length 4096 --swiglu \

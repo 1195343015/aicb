@@ -45,6 +45,7 @@ class MegatronRowLinear(MockedModel):
         self.computation_enable = computation_enable
         self.tensor_model_parallel_size, self.seq_len, self.batch_size = tp, seq_len, batch_size
         self.comm_size = 2 * seq_len * batch_size * output_size
+        self.micro_hidden_state_size = seq_len * batch_size * output_size
     
     def activation_memory(self):
         # ctx.save_for_backward(input, weight)
@@ -62,6 +63,7 @@ class MegatronRowLinear(MockedModel):
                         (self.input_size_per_partition, self.output_size),
                     ),
                     stage="forward.MegatronRowLinear." + self.name,
+                    flops=2 * self.seq_len * self.batch_size * self.input_size_per_partition * self.output_size
                 )
             )
         if self.tensor_model_parallel_size > 1:
@@ -100,7 +102,7 @@ class MegatronRowLinear(MockedModel):
                         comm_group=CommGroup.tp_group,
                         comm_group_size=self.tensor_model_parallel_size,
                         msg_size=self.comm_size,
-                        stage="backward.MegatronRowLinear",
+                        stage="backward.MegatronRowLinear.",
                     )
                 )
         # grad_input = grad_output.matmul(weight): (s, b, h)*(h, h'/N)
@@ -113,7 +115,8 @@ class MegatronRowLinear(MockedModel):
                         (self.seq_len, self.batch_size, self.output_size),
                         self.weight.shape,
                     ),
-                    stage="backward.MegatronRowLinear" + self.name,
+                    stage="backward.MegatronRowLinear." + self.name,
+                    flops=2 * self.seq_len * self.batch_size * self.input_size_per_partition * self.output_size
                 )
             )
             workloads.append(
@@ -123,7 +126,8 @@ class MegatronRowLinear(MockedModel):
                         (self.output_size, self.seq_len * self.batch_size),
                         (self.seq_len * self.batch_size, self.input_size_per_partition),
                     ),
-                    stage="backward.MegatronRowLinear" + self.name,
+                    stage="backward.MegatronRowLinear." + self.name,
+                    flops=2 * self.seq_len * self.batch_size * self.input_size_per_partition * self.output_size
                 )
             )
         return workloads
@@ -189,6 +193,7 @@ class MegatronColumnLinear(MockedModel):
                         (self.input_size, self.output_size_per_partition),
                     ),
                     stage="forward.MegatronColumnLinear." + self.name,
+                    flops=2 * self.seq_len * self.batch_size * self.input_size * self.output_size_per_partition
                 )
             )
         return workloads
@@ -217,6 +222,7 @@ class MegatronColumnLinear(MockedModel):
                         (self.output_size_per_partition, self.input_size),
                     ),
                     stage="backward.MegatronColumnLinear." + self.name,
+                    flops=2 * self.seq_len * self.batch_size * self.input_size * self.output_size_per_partition
                 )
             )
         if self.tensor_model_parallel_size > 1:
@@ -242,6 +248,7 @@ class MegatronColumnLinear(MockedModel):
                         (self.seq_len * self.batch_size, self.input_size),
                     ),
                     stage="backward.MegatronColumnLinear." + self.name,
+                    flops=2 * self.seq_len * self.batch_size * self.input_size * self.output_size_per_partition
                 )
             )
         if self.tensor_model_parallel_size > 1:

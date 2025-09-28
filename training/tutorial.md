@@ -25,12 +25,12 @@ docker run --gpus all -it --rm -v /path/to/AICBench:/workspace/AICBench nvcr.io/
 ## Physical Execution
 When running on a physical machine, additional configuration for PyTorch-related environment variables is required. This can be done by explicitly specifying them in a script or by adding the environment variables directly. The following table lists the required environment variables:
 
-| Parameter Name  | Description                   |
-|-----------------|-------------------------------|
-| nnodes          | Number of nodes               |
-| node_rank       | Rank number of the node       |
-| nproc_per_node  | Number of GPUs per node       |
-| master_addr     | Address of the master node    |
+| Parameter Name | Description                |
+| -------------- | -------------------------- |
+| nnodes         | Number of nodes            |
+| node_rank      | Rank number of the node    |
+| nproc_per_node | Number of GPUs per node    |
+| master_addr    | Address of the master node |
 
 
 ### Quick start for single-node execution
@@ -123,49 +123,49 @@ In addition to the quick start options, you can also customize the model paramet
 ### Parameters
 The main parameters for AICB are as follows: 
 
-| Category                     | Parameter Name                   | Description                                                                 | 
-|------------------------------|-----------------------------------|-----------------------------------------------------------------------------|
-| Name                         | frame                             | DeepSpeed/Megatron/DeepSeek                                                 |
-|                              | model_name                        | Llama/GPT/...                                                               |
-|Training Parameters           | world_size                        | Total number of GPUs                                                        |
-|                              | global_batch                      | Total batch size for training                                               |
-|                              | micro_batch                       | Batch size per model instance (local batch size).                           |
-|                              | epoch_num                         | Number of iterations                                                        |
-| Model parameters             | model_size                        | Model size (7/13/65/175/270)B and moe                                       |
-|                              | num_layers                        | Number of transformer layers.                                               |
-|                              | hidden_size                       | Transformer hidden size.                                                    |
-|                              | num_attention_heads               | Number of transformer attention heads.                                      |
-|                              | seq_length                        | Maximum sequence length to process.                                         |
-|                              | vocab_size                        | Size of vocab before EOD or padding.                                        |
-|                              | max_position_embeddings           | Maximum number of position embeddings to use.                               |
-|                              | ffn_hidden_size                   | Transformer Feed-Forward Network hidden size.                               |
-| Megatron parallel parameters | tensor_model_parallel_size        | Degree of tensor model parallelism.                                         |
-|                              | pipeline_model_parallel_size      | Degree of pipeline model parallelism.                                       |
-|                              | enable_sequence_parallel          | Enable sequence parallel optimization.                                      |
-| Megatron optimization parameters | use_flash_attn                | Use FlashAttention implementation of attention.                             |
-|                              | swiglu                            | Use gated linear units and SiLU activation instead of default gelu          |
-|                              | openai_gelu                       | Use OpenAI's GeLU implementation.                                           |
-|                              | onnx_safe                         | Use workarounds for known problems with Torch ONNX exporter                 |
-|                              | squared_relu                      | Use squared relu activation instead of default gelu                         |
-|                              | bias_gelu_fusion                  | Enable bias and gelu fusion.                                                |
-|                              | gated_linear_unit                 | Enable when use swiglu                                                      |
-| MoE                          | expert_model_parallel_size        | Degree of expert model parallelism                                          |
-|                              | moe_enable                        | Enable MoE                                                                  |
-|                              | num_experts                       | Number of Experts in MoE (None means no MoE)                                |
-|                              | moe_router_topk                   | Number of experts to route to for each token.                               |
-|                              | moe_grouped_gemm                  | When there are multiple experts per rank, compress multiple local (potentially small) gemms in a single kernel|
-| DeepSpeed parameters         | zero_stage,reduce_bucket_size     | choose zero optimizer stage                                                 |
-|                              | allgather_bucket_size             | Optimizes communication efficiency and memory usage during all-gather operations For stage 1/2 only                                                          |
-|                              | prefetch_bucket_size, param_persistence_threshold, model_persistence_threshold, max_live_parameters | For stage 3 only. Control the number of prefetch parameters. Control the size of all_gather and reduce_scatter |
-| DeepSeek parameters          | qk_rope_dim                       | RoPE dimention for QK                                                       |
-|                              | qk_nope_dim                       | non-RoPE (aka NoPE) dimention for QK                                        |
-|                              | q_lora_rank                       | Q down projection (aka compression, LoRA) dimention for Multi-Head Latent Attention (MLA) |
-|                              | kv_lora_rank                      | KV down projection (aka compression, LoRA) dimention for MLA                |
-|                              | v_head_dim                        | V head dimention                                                            |
-|                              | n_shared_expert                   | Number of shared experts per MoE layer                                      |
-|                              | n_dense_layer                     | Number of transformer blocks with dense MLP instead of MoE                  |
-| Other                        | aiob_enable                       | Enable AIOB to obtain computation time                                      |
-|                              | comp_filepath                     | Use aiob_lib to get operation compute time                                  |
+| Category                         | Parameter Name                                                                                      | Description                                                                                                    |
+| -------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Name                             | frame                                                                                               | DeepSpeed/Megatron/DeepSeek                                                                                    |
+|                                  | model_name                                                                                          | Llama/GPT/...                                                                                                  |
+| Training Parameters              | world_size                                                                                          | Total number of GPUs                                                                                           |
+|                                  | global_batch                                                                                        | Total batch size for training                                                                                  |
+|                                  | micro_batch                                                                                         | Batch size per model instance (local batch size).                                                              |
+|                                  | epoch_num                                                                                           | Number of iterations                                                                                           |
+| Model parameters                 | model_size                                                                                          | Model size (7/13/65/175/270)B and moe                                                                          |
+|                                  | num_layers                                                                                          | Number of transformer layers.                                                                                  |
+|                                  | hidden_size                                                                                         | Transformer hidden size.                                                                                       |
+|                                  | num_attention_heads                                                                                 | Number of transformer attention heads.                                                                         |
+|                                  | seq_length                                                                                          | Maximum sequence length to process.                                                                            |
+|                                  | vocab_size                                                                                          | Size of vocab before EOD or padding.                                                                           |
+|                                  | max_position_embeddings                                                                             | Maximum number of position embeddings to use.                                                                  |
+|                                  | ffn_hidden_size                                                                                     | Transformer Feed-Forward Network hidden size.                                                                  |
+| Megatron parallel parameters     | tensor_model_parallel_size                                                                          | Degree of tensor model parallelism.                                                                            |
+|                                  | pipeline_model_parallel_size                                                                        | Degree of pipeline model parallelism.                                                                          |
+|                                  | enable_sequence_parallel                                                                            | Enable sequence parallel optimization.                                                                         |
+| Megatron optimization parameters | use_flash_attn                                                                                      | Use FlashAttention implementation of attention.                                                                |
+|                                  | swiglu                                                                                              | Use gated linear units and SiLU activation instead of default gelu                                             |
+|                                  | openai_gelu                                                                                         | Use OpenAI's GeLU implementation.                                                                              |
+|                                  | onnx_safe                                                                                           | Use workarounds for known problems with Torch ONNX exporter                                                    |
+|                                  | squared_relu                                                                                        | Use squared relu activation instead of default gelu                                                            |
+|                                  | bias_gelu_fusion                                                                                    | Enable bias and gelu fusion.                                                                                   |
+|                                  | gated_linear_unit                                                                                   | Enable when use swiglu                                                                                         |
+| MoE                              | expert_model_parallel_size                                                                          | Degree of expert model parallelism                                                                             |
+|                                  | moe_enable                                                                                          | Enable MoE                                                                                                     |
+|                                  | num_experts                                                                                         | Number of Experts in MoE (None means no MoE)                                                                   |
+|                                  | moe_router_topk                                                                                     | Number of experts to route to for each token.                                                                  |
+|                                  | moe_grouped_gemm                                                                                    | When there are multiple experts per rank, compress multiple local (potentially small) gemms in a single kernel |
+| DeepSpeed parameters             | zero_stage,reduce_bucket_size                                                                       | choose zero optimizer stage                                                                                    |
+|                                  | allgather_bucket_size                                                                               | Optimizes communication efficiency and memory usage during all-gather operations For stage 1/2 only            |
+|                                  | prefetch_bucket_size, param_persistence_threshold, model_persistence_threshold, max_live_parameters | For stage 3 only. Control the number of prefetch parameters. Control the size of all_gather and reduce_scatter |
+| DeepSeek parameters              | qk_rope_dim                                                                                         | RoPE dimention for QK                                                                                          |
+|                                  | qk_nope_dim                                                                                         | non-RoPE (aka NoPE) dimention for QK                                                                           |
+|                                  | q_lora_rank                                                                                         | Q down projection (aka compression, LoRA) dimention for Multi-Head Latent Attention (MLA)                      |
+|                                  | kv_lora_rank                                                                                        | KV down projection (aka compression, LoRA) dimention for MLA                                                   |
+|                                  | v_head_dim                                                                                          | V head dimention                                                                                               |
+|                                  | n_shared_expert                                                                                     | Number of shared experts per MoE layer                                                                         |
+|                                  | n_dense_layer                                                                                       | Number of transformer blocks with dense MLP instead of MoE                                                     |
+| Other                            | aiob_enable                                                                                         | Enable AIOB to obtain computation time                                                                         |
+|                                  | comp_filepath                                                                                       | Use aiob_lib to get operation compute time                                                                     |
 
 ### Running on physical GPU clusters
 The current entry file for running custom cases is [aicb.py](../aicb.py). By using this file, you can flexibly choose more parameters for tuning.

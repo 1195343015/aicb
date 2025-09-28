@@ -565,7 +565,7 @@ class DeepSeekParams():
         self.world_size: int = 32  # Total 32 gpus
         self.tensor_model_parallel_size: int = 8
         self.expert_model_parallel_size: int = 32
-        self.pipeline_model_parallel: int = 1
+        self.pipeline_model_parallel_size: int = 1
 
         # MLA Params
         self.d_kv_c: int = 512      # kv_compression_dim

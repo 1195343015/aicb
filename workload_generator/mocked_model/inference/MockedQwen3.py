@@ -73,7 +73,7 @@ class Qwen3MoeParams():
         self.world_size: int = 32  # Total 32 gpus
         self.tensor_model_parallel_size: int = 1
         self.expert_model_parallel_size: int = 32
-        self.pipeline_model_parallel: int = 1
+        self.pipeline_model_parallel_size: int = 1
         
         self.moe_enable = True
 

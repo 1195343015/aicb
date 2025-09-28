@@ -68,7 +68,7 @@ else
     --master_port $MASTER_PORT \
     $script --iter_num=$iter_num --world_size=$((WORLD_SIZE*8))\
     --begin_size=$begin_size --end_size=$end_size --test_comm=$test_comm --model_name=$model_name\
-    --frame=standard_check --multi_all_reduce_enable=$multi_all_reduce_enable --pipeline_model_parallel=$WORLD_SIZE"
+    --frame=standard_check --multi_all_reduce_enable=$multi_all_reduce_enable --pipeline_model_parallel_size=$WORLD_SIZE"
 fi 
 
 if [ "$multi_all_reduce_enable" -eq 0 ]; then
@@ -90,5 +90,5 @@ else
     --master_port $MASTER_PORT \
     $script --iter_num=$iter_num --world_size=$((WORLD_SIZE*8))\
     --begin_size=$begin_size --end_size=$end_size --test_comm=$test_comm --model_name=$model_name\
-    --frame=collective_test --multi_all_reduce_enable=$multi_all_reduce_enable --pipeline_model_parallel=$WORLD_SIZE
+    --frame=collective_test --multi_all_reduce_enable=$multi_all_reduce_enable --pipeline_model_parallel_size=$WORLD_SIZE
 fi

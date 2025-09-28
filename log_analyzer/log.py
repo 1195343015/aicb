@@ -37,6 +37,7 @@ class LogItem:
     algbw: float = dataclasses.field(default=None)
     busbw: float = dataclasses.field(default=None)
     count: float = dataclasses.field(default=1)
+    flops: float = dataclasses.field(default=0)
 
     @property
     def elapsed_time(self) -> float:
@@ -227,7 +228,7 @@ class Log:
         return self.epoch_times
 
     def analyze_time(self, print_fn=print):
-        if self.epoch_times:
+        if self.epoch_times and len(self.epoch_times) > 1:
             self.epoch_times.pop(0)
             max_val = max(self.epoch_times)
             min_val = min(self.epoch_times)

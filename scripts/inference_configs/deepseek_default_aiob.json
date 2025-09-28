@@ -12,7 +12,7 @@
     "world_size": 32,
     "tensor_model_parallel_size": 8,
     "expert_model_parallel_size": 32,
-    "pipeline_model_parallel": 1,
+    "pipeline_model_parallel_size": 1,
     "d_kv_c": 512,
     "d_q_c": 1536,
     "d_r": 64,

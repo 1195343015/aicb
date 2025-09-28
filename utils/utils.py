@@ -41,7 +41,7 @@ def generate_masked_orthogonal_rank_groups(
 
         parallel_size (List[int]):
             The parallel size of each orthogonal parallel type. For example, if
-            tensor_parallel_size = 2, pipeline_model_parallel_group = 3, data_parallel_size = 4,
+            tensor_parallel_size = 2, pipeline_model_parallel_size_group = 3, data_parallel_size = 4,
             and the parallel mapping order is tp-pp-dp, then the parallel_size = [2, 3, 4].
 
         mask (List[bool]):
@@ -500,7 +500,7 @@ def get_aiob_path(args):
     result_dir = "./results/aiob_outputs"
     if not os.path.isdir(result_dir):
         os.makedirs(result_dir)
-    filename = f"{args.model_name}-world_size{args.world_size}-tp{args.tensor_model_parallel_size}-pp{args.pipeline_model_parallel}-ep{args.expert_model_parallel_size}-gbs{args.global_batch}-mbs{args.micro_batch}-seq{args.seq_length}-flash_attn-{args.use_flash_attn}.txt"
+    filename = f"{args.model_name}-world_size{args.world_size}-tp{args.tensor_model_parallel_size}-pp{args.pipeline_model_parallel_size}-ep{args.expert_model_parallel_size}-gbs{args.global_batch}-mbs{args.micro_batch}-seq{args.seq_length}-flash_attn-{args.use_flash_attn}.txt"
     filepath = os.path.join(result_dir, filename)
     return filepath
 

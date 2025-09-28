@@ -64,7 +64,7 @@ class Collective_Test(WorkloadGenerator):
                         LogItem(
                             comm_type=test_comm,
                             comm_group=CommGroup.pp_group,
-                            comm_group_size=self.args.pipeline_model_parallel,
+                            comm_group_size=self.args.pipeline_model_parallel_size,
                             msg_size=curr_size,
                             stage="test_step",
                         )

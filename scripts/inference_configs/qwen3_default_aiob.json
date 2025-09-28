@@ -7,7 +7,7 @@
   "world_size": 32,
   "tensor_model_parallel_size": 1,
   "expert_model_parallel_size": 32,
-  "pipeline_model_parallel": 1,
+  "pipeline_model_parallel_size": 1,
   "moe_enable": true,
   "result_dir": "results/workload/",
   "architectures": [

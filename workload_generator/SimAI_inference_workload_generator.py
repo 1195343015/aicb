@@ -221,7 +221,7 @@ class SimAIWorkload():
     def dump_file(self, filename):
         filename = filename + ".txt"
 
-        pp_comm_value = 2 * self.mbs * self.seq_len * self.args.hidden_size * (1 if self.args.pipeline_model_parallel > 1 else 0)
+        pp_comm_value = 2 * self.mbs * self.seq_len * self.args.hidden_size * (1 if self.args.pipeline_model_parallel_size > 1 else 0)
 
         pp_comm = (
             f"pp_comm: {pp_comm_value}"
@@ -230,7 +230,7 @@ class SimAIWorkload():
             f.write((
                 f"HYBRID_TRANSFORMER_FWD_IN_BCKWD model_parallel_NPU_group: {self.args.tensor_model_parallel_size} "
                 f"ep: {self.args.expert_model_parallel_size} "
-                f"pp: {self.args.pipeline_model_parallel} "
+                f"pp: {self.args.pipeline_model_parallel_size} "
                 f"all_gpus: {self.args.world_size} "
                 f"mode: 1 " # inference
                 f"vpp: 1 ga: 1 checkpoints: 0 checkpoint_initiates: 0 "
@@ -275,7 +275,7 @@ if __name__ == "__main__":
     result_dir = args.result_dir
     if not os.path.isdir(result_dir):
         os.makedirs(result_dir)
-    filename = f"{args.model_name}-world_size{args.world_size}-tp{args.tensor_model_parallel_size}-pp{args.pipeline_model_parallel}-ep{args.expert_model_parallel_size}-bs{args.micro_batch}-seq{args.seq_length}"
+    filename = f"{args.model_name}-world_size{args.world_size}-tp{args.tensor_model_parallel_size}-pp{args.pipeline_model_parallel_size}-ep{args.expert_model_parallel_size}-bs{args.micro_batch}-seq{args.seq_length}"
     
     if args.aiob_enable:
         if "Qwen3-Moe" in model_name:
@@ -292,7 +292,7 @@ if __name__ == "__main__":
 
     else:
         aiob_dir = "results/aiob_outputs"
-        aiob_output_filename = f"{args.model_name}-world_size{args.world_size}-tp{args.tensor_model_parallel_size}-pp{args.pipeline_model_parallel}-ep{args.expert_model_parallel_size}-bpg{args.micro_batch}-seq{args.seq_length}.txt"
+        aiob_output_filename = f"{args.model_name}-world_size{args.world_size}-tp{args.tensor_model_parallel_size}-pp{args.pipeline_model_parallel_size}-ep{args.expert_model_parallel_size}-bpg{args.micro_batch}-seq{args.seq_length}.txt"
         aiob_output_filepath = os.path.join(aiob_dir,aiob_output_filename)
         if not os.path.exists(aiob_output_filepath):
             print(f"aiob not enabled, and {aiob_output_filepath} not found. Using default compute time.")

@@ -166,6 +166,12 @@ case $model_size in
     hidden_size=4096
     num_attention_heads=32
     ;;
+  1)
+    model_name=gpt_1B
+    num_layers=1
+    hidden_size=4096
+    num_attention_heads=32
+    ;;
   405)
     model_name=llama_405B
     num_layers=128
